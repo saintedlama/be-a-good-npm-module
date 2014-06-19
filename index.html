@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en">
+
+	<head>
+		<meta charset="utf-8">
+
+		<title>Be a good npm Module!</title>
+
+		<meta name="description" content="Getting a npm module right">
+		<meta name="author" content="Christoph Walcher">
+
+		<meta name="apple-mobile-web-app-capable" content="yes" />
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<link rel="stylesheet" href="css/reveal.min.css">
+		<link rel="stylesheet" href="css/theme/simple.css" id="theme">
+
+		<!-- For syntax highlighting -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+		<script>
+			if( window.location.search.match( /print-pdf/gi ) ) {
+				var link = document.createElement( 'link' );
+				link.rel = 'stylesheet';
+				link.type = 'text/css';
+				link.href = 'css/print/pdf.css';
+				document.getElementsByTagName( 'head' )[0].appendChild( link );
+			}
+		</script>
+
+		<!--[if lt IE 9]>
+		<script src="lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+
+	<body>
+
+		<div class="reveal">
+
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h1>Be a good npm Module!</h1>
+					<h3>Readme, License, Travis, Coveralls</h3>
+				</section>
+
+                <section>
+                    <h2>Minimum Requirements</h2>
+                    <ul>
+                        <li>README.md including tutorial</li>
+                        <li>README.md including npm install command</li>
+                        <li>LICENSE file (licenseify)</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Traffic Sources</h2>
+                    <img src="img/traffic_sources.png" alt="Traffic Sources" />
+                </section>
+
+                <section>
+                    <h2>Popular Content</h2>
+                    <img src="img/popular_content.png" alt="Popular Content" />
+                </section>
+
+                <section>
+                    <h2>Publish modules</h2>
+                    <ul>
+                        <li>Get an npm account</li>
+                        <li>npm pack</li>
+                        <li>check your package tgz. Don't ship shit</li>
+                        <li>npm publish package_name.tgz</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Don't ship shit!</h2>
+                    <img src="img/ship_shit.png" alt="Module shipping too much files" />
+                </section>
+                <section>
+                    <h2>Test and Cover</h2>
+
+                    <ul>
+                        <li>I use mocha</li>
+                        <li>plain mocha output is - not nice</li>
+                        <li>mocha -R spec </li>
+                        <li>Coverage: Istanbul</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Test and Cover</h2>
+                    <pre><code data-trim contenteditable>
+"scripts": {
+    "test": "mocha -R spec test/",
+    "cover": "istanbul cover
+        ./node_modules/mocha/bin/_mocha --report html -- -R spec"
+}
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h2>Going CI</h2>
+                    <ul>
+                        <li>Travis</li>
+                        <li>Coveralls</li>
+                        <li>Free for Open Source</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h2>Travis and Coveralls</h2>
+                    <pre><code data-trim contenteditable>
+language: node_js
+node_js:
+- "0.10"
+
+services:
+- mongodb
+
+before_script:
+- npm install -g istanbul
+- npm install coveralls
+- npm install mocha-lcov-reporter
+
+after_script:
+- NODE_ENV=test istanbul cover
+    ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec &&
+    cat ./coverage/lcov.info |
+    ./node_modules/coveralls/bin/coveralls.js && rm -rf ./coverage
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h1>Thanks!</h1>
+                </section>
+			</div>
+
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.min.js"></script>
+
+		<script>
+
+			// Full list of configuration options available here:
+			// https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+
+				theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+				transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
+
+				// Parallax scrolling
+				// parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+				// parallaxBackgroundSize: '2100px 900px',
+
+				// Optional libraries used to extend on reveal.js
+				dependencies: [
+					{ src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+					{ src: 'plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+					{ src: 'plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+					{ src: 'plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+				]
+			});
+
+		</script>
+
+	</body>
+</html>
